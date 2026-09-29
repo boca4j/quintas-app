@@ -1,4 +1,4 @@
-function BarraFiltros({texto, aoMudarTexto, regioes, regiao, aoMudarRegiao}) {
+function BarraFiltros({texto, aoMudarTexto, regioes, regiao, aoMudarRegiao, tiposEspaco, tipoEspaco, aoMudarTipoEspaco}) {
     return (
         <div className="barra-filtros">
             <label className="campo">
@@ -25,6 +25,24 @@ function BarraFiltros({texto, aoMudarTexto, regioes, regiao, aoMudarRegiao}) {
                         key={region}
                         value={region}>
                             {region}
+                        </option>
+                })}
+                </select>
+            </label>
+
+            <label className="campo">
+                <span className="label">Tipo de Espaço</span>
+                <select
+                    value={tipoEspaco}
+                    onChange={(e => aoMudarTipoEspaco(e.target.value))}
+                    className="input" 
+                >
+                <option value="Todos">Todos</option>
+                {tiposEspaco.map((tipo) => {
+                    <option
+                        key={tipo}
+                        value={tipo}>
+                            {tipo}
                         </option>
                 })}
                 </select>
