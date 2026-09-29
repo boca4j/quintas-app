@@ -72,6 +72,14 @@ function BarraFiltros({
                 <option value="avaliacao">Melhor Avaliação</option>
                 </select>
             </label>
+
+            <button
+                type="button"
+                onClick={aoLimparFiltros}
+                className="btn-secundario"
+            >
+                Limpar Filtros
+            </button>
         </div>
     )
 }
