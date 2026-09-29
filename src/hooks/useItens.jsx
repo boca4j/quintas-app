@@ -8,9 +8,17 @@ export function useItens() {
 
   useEffect(() => { //react nao permite que funcao passada ao useEffect seja async
     async function carregar() {
-      const dados = await listarItens()
-      setItens(dados)
-      setLoading(false);
+        try{
+            const dados = await listarItens()
+            setItens(dados)
+        }
+        catch (erroApi) {
+            setErro(erroApi.message)
+        }
+        finally {
+            setLoading(false);
+        }
+      
     }
     carregar()
   }, [])
