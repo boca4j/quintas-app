@@ -1,4 +1,16 @@
-function BarraFiltros({texto, aoMudarTexto, regioes, regiao, aoMudarRegiao, tiposEspaco, tipoEspaco, aoMudarTipoEspaco}) {
+function BarraFiltros({
+    texto, 
+    aoMudarTexto, 
+    regioes, 
+    regiao, 
+    aoMudarRegiao, 
+    tiposEspaco, 
+    tipoEspaco, 
+    aoMudarTipoEspaco,
+    ordenacao,
+    aoMudarOrdenacao,
+
+}) {
     return (
         <div className="barra-filtros">
             <label className="campo">
@@ -45,6 +57,19 @@ function BarraFiltros({texto, aoMudarTexto, regioes, regiao, aoMudarRegiao, tipo
                             {tipo}
                         </option>
                 })}
+                </select>
+            </label>
+
+            <label className="campo">
+                <span className="label">Ordenar por</span>
+                <select
+                    value={ordenacao}
+                    onChange={(e => aoMudarOrdenacao(e.target.value))}
+                    className="input" 
+                >
+                <option value="precoAsc">Preço Ascendente</option>
+                <option value="precoDesc">Preço Descendente</option>
+                <option value="avaliacao">Melhor Avaliação</option>
                 </select>
             </label>
         </div>
