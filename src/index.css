@@ -1,0 +1,32 @@
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-titulo: 'Georgia', 'Times New Roman', serif;
+
+  /* Verde-oliva: cor principal */
+  --color-primaria-50: #f4f6ee;
+  --color-primaria-100: #e5ead6;
+  --color-primaria-200: #cbd6ae;
+  --color-primaria-500: #6b7d3a;
+  --color-primaria-600: #56662c;
+  --color-primaria-700: #434f23;
+
+  /* Areia: fundos e bordas */
+  --color-areia-50: #faf8f4;
+  --color-areia-100: #f3efe6;
+  --color-areia-200: #e6dfcf;
+  --color-areia-500: #9a8f78;
+
+  /* Texto */
+  --color-texto: #2b2a26;
+  --color-texto-suave: #6b665c;
+
+  /* Estados */
+  --color-sucesso: #2f7a4a;
+  --color-perigo: #b3372e;
+  --color-aviso: #b7791f;
+
+  /* Destaque (favoritos, avaliação) */
+  --color-destaque: #d4a017;
+
+  --radius-cartao: 0.75rem;
+}
