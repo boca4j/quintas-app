@@ -32,13 +32,13 @@ function BarraFiltros({
                     className="input" 
                 >
                 <option value="Todas">Todas</option>
-                {regioes.map((region) => {
+                {regioes.map((region) => (
                     <option
                         key={region}
                         value={region}>
                             {region}
                         </option>
-                })}
+                ))}
                 </select>
             </label>
 
@@ -50,13 +50,13 @@ function BarraFiltros({
                     className="input" 
                 >
                 <option value="Todos">Todos</option>
-                {tiposEspaco.map((tipo) => {
+                {tiposEspaco.map((tipo) => (
                     <option
                         key={tipo}
                         value={tipo}>
                             {tipo}
                         </option>
-                })}
+                ))}
                 </select>
             </label>
 

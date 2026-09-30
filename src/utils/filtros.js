@@ -27,7 +27,7 @@ export function filtrarPorTipo(itens, tipo) {
     return itens.filter((item) => item.categoria === tipo)
 }
 
-export function ordenaerItens(itens, ordenacao) {
+export function ordenarItens(itens, ordenacao) {
     const copiaArrayItens=[...itens]
 
     if(ordenacao === 'precoAsc') {
@@ -43,4 +43,14 @@ export function ordenaerItens(itens, ordenacao) {
     }
 
     return copiaArrayItens
+}
+
+//para os select
+export function regioesDisponiveis(itens) {
+    //new Set remove valores repetidos
+    return [... new Set(itens.map((item) => item.localizacao))].sort()
+}
+
+export function tiposDisponiveis(itens) {
+    return [... new Set(itens.map((item) => item.categoria))].sort()
 }
