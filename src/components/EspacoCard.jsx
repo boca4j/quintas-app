@@ -1,7 +1,8 @@
 import ImagemEspaco from './ImagemEspaco.jsx'
 import BotaoFavorito from './BotaoFavorito.jsx'
+import { Link } from 'react-router-dom'
 
-export default function EspacoCard ( {espaco} ) {
+export default function EspacoCard ({espaco}) {
     return (
         <div className="cartao-interativo">
            <div className="cartao-imagem">
@@ -9,9 +10,13 @@ export default function EspacoCard ( {espaco} ) {
            </div>
 
            <div className="cartao-corpo">
-                <h3>{espaco.nome}</h3>
-
-                <BotaoFavorito espacoId={Number(espaco.id)} />
+                <div className="flex items-center justify-between">
+                    <Link to={`/espacos/${espaco.id}`}>
+                        <h3 className="text-lg font-bold text-texto hover:underline">{espaco.nome}</h3>
+                    </Link>
+                    
+                    <BotaoFavorito espacoId={Number(espaco.id)} />
+                </div>
                 <p className="subtitulo">
                     <span className="badge">{espaco.categoria}</span>
                     {espaco.regiao}
