@@ -9,7 +9,7 @@ function BarraFiltros({
     aoMudarTipoEspaco,
     ordenacao,
     aoMudarOrdenacao,
-
+    aoLimparFiltros
 }) {
     return (
         <div className="barra-filtros">
