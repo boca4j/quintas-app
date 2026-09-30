@@ -1,4 +1,5 @@
 import ImagemEspaco from './ImagemEspaco.jsx'
+import BotaoFavorito from './BotaoFavorito.jsx'
 
 export default function EspacoCard ( {espaco} ) {
     return (
@@ -9,6 +10,8 @@ export default function EspacoCard ( {espaco} ) {
 
            <div className="cartao-corpo">
                 <h3>{espaco.nome}</h3>
+
+                <BotaoFavorito espacoId={Number(espaco.id)} />
                 <p className="subtitulo">
                     <span className="badge">{espaco.categoria}</span>
                     {espaco.regiao}
