@@ -20,7 +20,6 @@ export function validarEmail(email) {
   return null
 }
 
-
 export function validarReserva({ inicio, fim, convidados, nome, email }, capacidade) {
   const erros = validarData(inicio, fim)
 
