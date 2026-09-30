@@ -19,7 +19,7 @@ export default function EspacoCard ({espaco}) {
                 </div>
                 <p className="subtitulo">
                     <span className="badge">{espaco.categoria}</span>
-                    {espaco.regiao}
+                    {espaco.localizacao}
                 </p>
                 <div className="flex items-center justify-between">
                     <span className="preco">{espaco.precoDia}€ / dia</span>

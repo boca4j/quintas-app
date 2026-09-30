@@ -13,6 +13,16 @@ export function filtrarPorTexto(itens, texto) {
     return itens.filter((item) => {
         const nomeLimpo = removerAcentos(item.nome)
         const descricaoLimpa = removerAcentos(item.descricao)
-        return nomeLimpo.includes(textoLimpo) || descricaoLimpa.inclues(textoLimpo)
+        return nomeLimpo.includes(textoLimpo) || descricaoLimpa.includes(textoLimpo)
     })
+}
+
+export function filtrarPorRegiao(itens, regiao){
+    if (regiao === 'Todas') return itens
+    return itens.filter((item) => item.localizacao === regiao)
+}
+
+export function filtrarPorTipo(itens, tipo) {
+    if (tipo === 'Todos') return itens
+    return itens.filter((item) => item.categoria === tipo)
 }
