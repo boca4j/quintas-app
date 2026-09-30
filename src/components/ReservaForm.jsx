@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import CampoForm from './CampoForm.jsx'
+import { validarReserva } from '../utils/validacoes.js'
 
 const valoresIniciais = { inicio: '', fim: '', convidados: '', nome: '', email: '' }
 
 export default function ReservaForm({ espaco, onSubmit }) {
   const [valores, setValores] = useState(valoresIniciais)
+  const erros = validarReserva(valores)
+  const temErros = Object.keys(erros).length > 0
 
   function handleChange(evento) {
     const { name, value } = evento.target
@@ -13,6 +16,7 @@ export default function ReservaForm({ espaco, onSubmit }) {
 
   function handleSubmit(evento) {
     evento.preventDefault()
+    if (temErros) return
     onSubmit({
       itemId: espaco.id,
       dataInicio: valores.inicio,
