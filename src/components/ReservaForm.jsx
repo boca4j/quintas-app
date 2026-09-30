@@ -4,7 +4,7 @@ import { validarReserva } from '../utils/validacoes.js'
 
 const valoresIniciais = { inicio: '', fim: '', convidados: '', nome: '', email: '' }
 
-export default function ReservaForm({ espaco, onSubmit }) {
+export default function ReservaForm({ espaco, onSubmit, aSubmeter = false }) {
   const [valores, setValores] = useState(valoresIniciais)
   const [visitados, setVisitados] = useState({})
 
@@ -25,7 +25,7 @@ export default function ReservaForm({ espaco, onSubmit }) {
 
   function handleSubmit(evento) {
     evento.preventDefault()
-    if (temErros) return
+    if (temErros || aSubmeter) return
     onSubmit({
       itemId: espaco.id,
       dataInicio: valores.inicio,
@@ -86,9 +86,13 @@ export default function ReservaForm({ espaco, onSubmit }) {
         erro={erroVisivel('email')}
       />
 
-      <button type="submit" className="btn-primario w-full">
-        Reservar
-      </button>
+       <button
+        type="submit"
+        disabled={temErros || aSubmeter}
+        className="btn-primario w-full"
+        >
+        {aSubmeter ? 'A reservar...' : 'Reservar'}
+       </button>
     </form>
   )
 }
