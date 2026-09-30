@@ -1,8 +1,18 @@
 import {useItens} from '../hooks/useItens.jsx'
 import EspacoCard from '../components/EspacoCard.jsx'
+import Loading from '../components/Loading.jsx'
+import MensagemErro from '../components/MensagemErro.jsx'
 
 export default function ListaEspacosPage() {
-  const {itens} = useItens()
+  const {itens, loading, erro} = useItens()
+
+  if (loading) {
+    return <Loading mensagem="A carregar espaços..." />
+  }
+
+  if (erro) {
+    return <MensagemErro mensagem={erro} />
+  }
 
   return (
     <div className="pagina">
@@ -13,11 +23,17 @@ export default function ListaEspacosPage() {
         </div>
       </div>
 
-      <div className="grelha">
-        {itens.map((espaco) => (
-          <EspacoCard key={espaco.id} espaco={espaco} />
-        ))}
-      </div>
+      {itens.length === 0 ? (
+        <div classeName="estado-vazio">
+          Nenhum espaço encontrado.
+        </div>
+      ) : (
+        <div className="grelha">
+          {itens.map((espaco) => (
+            <EspacoCard key={espaco.id} espaco={espaco} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
