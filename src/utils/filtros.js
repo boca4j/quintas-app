@@ -26,3 +26,21 @@ export function filtrarPorTipo(itens, tipo) {
     if (tipo === 'Todos') return itens
     return itens.filter((item) => item.categoria === tipo)
 }
+
+export function ordenaerItens(itens, ordenacao) {
+    const copiaArrayItens=[...itens]
+
+    if(ordenacao === 'precoAsc') {
+        return copiaArrayItens.sort((a, b) => a.precoDia - b.precoDia)
+    }
+
+    if(ordenacao === 'precoDesc') {
+        return copiaArrayItens.sort((a, b) => b.precoDia - a.precoDia)
+    }
+
+    if(ordenacao === 'avaliacao') {
+        return copiaArrayItens.sort((a, b) => b.avaliacao - a.avaliacao)
+    }
+
+    return copiaArrayItens
+}
