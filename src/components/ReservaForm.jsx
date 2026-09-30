@@ -6,7 +6,7 @@ const valoresIniciais = { inicio: '', fim: '', convidados: '', nome: '', email: 
 
 export default function ReservaForm({ espaco, onSubmit }) {
   const [valores, setValores] = useState(valoresIniciais)
-  const erros = validarReserva(valores)
+  const erros = validarReserva(valores, espaco.capacidade)
   const temErros = Object.keys(erros).length > 0
 
   function handleChange(evento) {
@@ -44,9 +44,11 @@ export default function ReservaForm({ espaco, onSubmit }) {
         onChange={handleChange}
       />
       <CampoForm
-        label="Número de convidados"
+        label={`Número de convidados (máx. ${espaco.capacidade})`}
         name="convidados"
         type="number"
+        min="1"
+        max={espaco.capacidade}
         value={valores.convidados}
         onChange={handleChange}
       />
