@@ -1,8 +1,9 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useReservas } from '../hooks/useReservas.js'
 import Loading from '../components/Loading.jsx'
 import MensagemErro from '../components/MensagemErro.jsx'
 import ImagemEspaco from '../components/ImagemEspaco.jsx'
-import { Link } from 'react-router-dom'
 
 function calcularDias(inicio, fim) {
   const umDia = 1000 * 60 * 60 * 24
@@ -18,26 +19,50 @@ function formatarPreco(valor) {
 }
 
 function MinhasReservasPage() {
-  const { reservas, loading, erro, recarregar } = useReservas()
+  const { reservas, loading, erro, recarregar, cancelar } = useReservas()
+  const [aCancelar, setACancelar] = useState(null)
+  const [erroCancelar, setErroCancelar] = useState(null)
+
+  async function handleCancelar(reserva) {
+    const nomeEspaco = reserva.espaco?.nome ?? 'este espaço'
+    if (!window.confirm(`Cancelar a reserva de ${nomeEspaco}?`)) return
+
+    setACancelar(reserva.id)
+    setErroCancelar(null)
+    try {
+      await cancelar(reserva.id)
+    } catch (e) {
+      setErroCancelar(e.message)
+    } finally {
+      setACancelar(null)
+    }
+  }
 
   if (loading) return <Loading mensagem="A carregar reservas..." />
   if (erro) return <MensagemErro mensagem={erro} onTentarNovamente={recarregar} />
   if (reservas.length === 0) {
-      return (
-        <div className="pagina">
-          <h1>As minhas reservas</h1>
-          <div className="estado-vazio mt-6">
-            <p>Ainda não tens reservas.</p>
-            <Link to="/" className="btn-primario mt-4">
-              Ver espaços
-            </Link>
-          </div>
+    return (
+      <div className="pagina">
+        <h1>As minhas reservas</h1>
+        <div className="estado-vazio mt-6">
+          <p>Ainda não tens reservas.</p>
+          <Link to="/" className="btn-primario mt-4">
+            Ver espaços
+          </Link>
         </div>
-      )
-    }
+      </div>
+    )
+  }
+
   return (
     <div className="pagina">
       <h1>As minhas reservas</h1>
+
+      {erroCancelar && (
+        <div className="mt-4">
+          <MensagemErro mensagem={erroCancelar} />
+        </div>
+      )}
 
       <ul className="mt-6 flex flex-col gap-4">
         {reservas.map((reserva) => {
@@ -79,6 +104,17 @@ function MinhasReservasPage() {
                 {total !== null && (
                   <p className="preco mt-2">Total: {formatarPreco(total)}</p>
                 )}
+
+                <div className="mt-3 flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => handleCancelar(reserva)}
+                    disabled={aCancelar === reserva.id}
+                    className="btn-perigo"
+                  >
+                    {aCancelar === reserva.id ? 'A cancelar...' : 'Cancelar reserva'}
+                  </button>
+                </div>
               </div>
             </li>
           )
