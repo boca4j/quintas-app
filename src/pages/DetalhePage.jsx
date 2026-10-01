@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom'
 import { useItem } from '../hooks/useItem.jsx'
 import Loading from '../components/Loading.jsx'
 import MensagemErro from '../components/MensagemErro.jsx'
