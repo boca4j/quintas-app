@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { listarItens } from '../api/quintasApi.js'
 import { useFavoritos } from '../hooks/useFavoritos.jsx'
 import Loading from '../components/Loading.jsx'
 import MensagemErro from '../components/MensagemErro.jsx'
+import EspacoCard from '../components/EspacoCard.jsx'
 
 function FavoritosPage() {
   const { favoritos } = useFavoritos()
@@ -30,13 +30,11 @@ function FavoritosPage() {
     <div className="pagina">
       <h1>Favoritos</h1>
 
-      <ul className="mt-6 flex flex-col gap-2">
+      <div className="grelha mt-6">
         {espacosFavoritos.map((espaco) => (
-          <li key={espaco.id}>
-            <Link to={`/espacos/${espaco.id}`}>{espaco.nome}</Link>
-          </li>
+          <EspacoCard key={espaco.id} espaco={espaco} />
         ))}
-      </ul>
+      </div>
     </div>
   )
 }
