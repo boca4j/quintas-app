@@ -3,7 +3,9 @@ const API = 'http://localhost:3001/quintas'
 async function tratarResposta(resposta) {
   if (!resposta.ok) {
     const dados = await resposta.json().catch(() => ({}))
-    throw new Error(dados.erro || 'Ocorreu um erro inesperado.')
+    const erro = new Error(dados.erro || 'Ocorreu um erro inesperado.')
+    erro.status = resposta.status
+    throw erro
   }
   if (resposta.status === 204) return null
   return resposta.json()
