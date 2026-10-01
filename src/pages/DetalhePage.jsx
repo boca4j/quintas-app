@@ -4,6 +4,7 @@ import Loading from '../components/Loading.jsx'
 import MensagemErro from '../components/MensagemErro.jsx'
 import ImagemEspaco from '../components/ImagemEspaco.jsx'
 import BotaoFavorito from '../components/BotaoFavorito.jsx'
+import { Link, useParams } from 'react-router-dom'
 
 export default function DetalhePage() {
   const { id } = useParams()
@@ -18,11 +19,15 @@ export default function DetalhePage() {
 
   return (
     <div className="pagina max-w-3xl">
-      <div className="cartao-imagem h-64 rounded-cartao">
+      <Link to="/" className="subtitulo hover:underline">
+        ← Voltar à lista
+      </Link>
+
+      <div className="cartao-imagem mt-4 h-64 rounded-cartao">
         <ImagemEspaco src={item.imagem} alt={item.nome} />
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="mt-4 flex items-center justify-between">
         <h1 className="text-3xl font-bold text-texto">{item.nome}</h1>
         <BotaoFavorito espacoId={Number(id)} />
       </div>
