@@ -5,8 +5,8 @@ const FavoritosContext = createContext(null)
 
 function lerFavoritosGuardados() {
   try {
-    const guardados = localStorage.getItem(CHAVE_LOCALSTORAGE)
-    return guardados ? JSON.parse(guardados) : []
+    const guardados = JSON.parse(localStorage.getItem(CHAVE_LOCALSTORAGE))
+    return Array.isArray(guardados) ? guardados.map(Number) : []
   } catch {
     return []
   }
@@ -16,23 +16,30 @@ export function FavoritosProvider({ children }) {
   const [favoritos, setFavoritos] = useState(lerFavoritosGuardados)
 
   useEffect(() => {
-    localStorage.setItem(CHAVE_LOCALSTORAGE, JSON.stringify(favoritos))
+    try {
+      localStorage.setItem(CHAVE_LOCALSTORAGE, JSON.stringify(favoritos))
+    } catch {
+      // localStorage indisponível: os favoritos ficam só em memória
+    }
   }, [favoritos])
 
+  function eFavorito(espacoId) {
+    return favoritos.includes(Number(espacoId))
+  }
+
   function alternarFavorito(espacoId) {
+    const id = Number(espacoId)
     setFavoritos((atual) =>
-      atual.includes(espacoId)
-        ? atual.filter((id) => id !== espacoId)
-        : [...atual, espacoId],
+      atual.includes(id) ? atual.filter((x) => x !== id) : [...atual, id],
     )
   }
 
-  function eFavorito(espacoId) {
-    return favoritos.includes(espacoId)
+  function limparFavoritos() {
+    setFavoritos([])
   }
 
   return (
-    <FavoritosContext.Provider value={{ favoritos, alternarFavorito, eFavorito }}>
+    <FavoritosContext.Provider value={{ favoritos, eFavorito, alternarFavorito, limparFavoritos }}>
       {children}
     </FavoritosContext.Provider>
   )

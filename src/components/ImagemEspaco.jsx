@@ -1,11 +1,18 @@
-const PLACEHOLDER = 'https://placehold.co/600x400?text=Sem+imagem'
+import { useState } from 'react'
 
-function ImagemEspaco({ src, alt }) {
+const PLACEHOLDER = 'https://placehold.co/600x400/f3efe6/6b665c?text=Sem+imagem'
+
+function ImagemEspaco({ src, alt, className = '' }) {
+  const [falhou, setFalhou] = useState(false)
+  const semImagem = !src || falhou
+
   return (
     <img
-      src={src || PLACEHOLDER}
-      alt={alt}
-      className="h-full w-full object-cover"
+      src={semImagem ? PLACEHOLDER : src}
+      alt={semImagem ? `${alt} (sem imagem)` : alt}
+      loading="lazy"
+      onError={() => setFalhou(true)}
+      className={`h-full w-full object-cover ${className}`}
     />
   )
 }
