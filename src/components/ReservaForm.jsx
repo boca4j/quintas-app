@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import CampoForm from './CampoForm.jsx'
 import { validarReserva } from '../utils/validacoes.js'
+import { calcularDias, calcularTotal } from '../utils/datas.js'
 
 const valoresIniciais = { inicio: '', fim: '', convidados: '', nome: '', email: '' }
 
@@ -12,6 +13,10 @@ export default function ReservaForm({ espaco, onSubmit, aSubmeter = false }) {
   const temErros = Object.keys(erros).length > 0
 
   const erroVisivel = (campo) => (visitados[campo] ? erros[campo] : undefined)
+
+  const resumoValido = !erros.inicio && !erros.fim && valores.inicio && valores.fim
+  const dias = resumoValido ? calcularDias(valores.inicio, valores.fim) : null
+  const total = resumoValido ? calcularTotal(espaco.precoDia, dias) : null
 
   function handleChange(evento) {
     const { name, value } = evento.target
@@ -85,14 +90,18 @@ export default function ReservaForm({ espaco, onSubmit, aSubmeter = false }) {
         onBlur={handleBlur}
         erro={erroVisivel('email')}
       />
-
-       <button
+      {resumoValido && (
+        <p className="subtitulo">
+          {dias} {dias === 1 ? 'dia' : 'dias'} · <span className="preco">{total}€</span>
+        </p>
+      )}
+      <button
         type="submit"
         disabled={temErros || aSubmeter}
         className="btn-primario w-full"
-        >
+      >
         {aSubmeter ? 'A reservar...' : 'Reservar'}
-       </button>
+      </button>
     </form>
   )
 }
