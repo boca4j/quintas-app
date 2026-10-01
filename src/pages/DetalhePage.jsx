@@ -1,13 +1,46 @@
+import { useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useItem } from '../hooks/useItem.jsx'
+import { verificarDisponibilidade, criarReserva } from '../api/quintasApi.js'
 import Loading from '../components/Loading.jsx'
 import MensagemErro from '../components/MensagemErro.jsx'
 import ImagemEspaco from '../components/ImagemEspaco.jsx'
 import BotaoFavorito from '../components/BotaoFavorito.jsx'
-import { Link, useParams } from 'react-router-dom'
+import ReservaForm from '../components/ReservaForm.jsx'
 
 export default function DetalhePage() {
   const { id } = useParams()
+  const navigate = useNavigate()
   const { item, loading, erro } = useItem(id)
+  const [aSubmeter, setASubmeter] = useState(false)
+  const [erroReserva, setErroReserva] = useState(null)
+  const [sucesso, setSucesso] = useState(false)
+
+  async function handleReservar(dados) {
+    setASubmeter(true)
+    setErroReserva(null)
+
+    try {
+      const { disponivel } = await verificarDisponibilidade(dados.itemId, {
+        inicio: dados.dataInicio,
+        fim: dados.dataFim,
+        quantidade: dados.quantidade,
+      })
+
+      if (!disponivel) {
+        setErroReserva('Sem disponibilidade para as datas escolhidas.')
+        return
+      }
+
+      await criarReserva(dados)
+      setSucesso(true)
+      setTimeout(() => navigate('/minhas-reservas'), 1500)
+    } catch (erroApi) {
+      setErroReserva(erroApi.message)
+    } finally {
+      setASubmeter(false)
+    }
+  }
 
   if (loading) return <Loading mensagem="A carregar espaço..." />
 
@@ -43,6 +76,17 @@ export default function DetalhePage() {
         <span className="avaliacao">★ {item.avaliacao}</span>
         <span className="subtitulo">{item.capacidade} pessoas</span>
       </div>
+
+      {sucesso ? (
+        <p className="alerta-sucesso mt-6" role="status">
+          Reserva criada com sucesso! A redirecionar para as suas reservas...
+        </p>
+      ) : (
+        <div className="mt-6">
+          <ReservaForm espaco={item} onSubmit={handleReservar} aSubmeter={aSubmeter} />
+          <MensagemErro mensagem={erroReserva} />
+        </div>
+      )}
     </div>
   )
 }
