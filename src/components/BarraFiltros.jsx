@@ -67,6 +67,7 @@ function BarraFiltros({
                     onChange={(e => aoMudarOrdenacao(e.target.value))}
                     className="input" 
                 >
+                <option value="">Relevância</option>
                 <option value="precoAsc">Preço Ascendente</option>
                 <option value="precoDesc">Preço Descendente</option>
                 <option value="avaliacao">Melhor Avaliação</option>
