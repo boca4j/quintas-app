@@ -3,6 +3,7 @@ import { useItem } from '../hooks/useItem.jsx'
 import Loading from '../components/Loading.jsx'
 import MensagemErro from '../components/MensagemErro.jsx'
 import ImagemEspaco from '../components/ImagemEspaco.jsx'
+import BotaoFavorito from '../components/BotaoFavorito.jsx'
 
 export default function DetalhePage() {
   const { id } = useParams()
@@ -21,7 +22,10 @@ export default function DetalhePage() {
         <ImagemEspaco src={item.imagem} alt={item.nome} />
       </div>
 
-      <h1 className="mt-4 text-3xl font-bold text-texto">{item.nome}</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold text-texto">{item.nome}</h1>
+        <BotaoFavorito espacoId={Number(id)} />
+      </div>
 
       <p className="subtitulo">
         <span className="badge">{item.categoria}</span>
