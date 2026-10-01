@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { listarReservas, cancelarReserva } from '../api/quintasApi.js'
-
+import { listarReservas, listarItens, cancelarReserva } from '../api/quintasApi.js'
 export function useReservas() {
     const [reservas, setReservas] = useState([])
     const [loading, setLoading] = useState(true)
@@ -10,8 +9,18 @@ export function useReservas() {
     setLoading(true)
     setErro(null)
     try {
-      const dados = await listarReservas()
-      setReservas(dados)
+      const [listaReservas, listaItens] = await Promise.all([
+        listarReservas(),
+        listarItens(),
+      ])
+      const itensPorId = new Map(listaItens.map((item) => [item.id, item]))
+      
+      setReservas(
+        listaReservas.map((reserva) => ({
+          ...reserva,
+          espaco: itensPorId.get(Number(reserva.itemId)) ?? null,
+        })),
+      )
     } catch (e) {
       setErro(e.message)
     } finally {
