@@ -33,6 +33,38 @@
   --radius-cartao: 0.75rem;
 }
 
+@layer base {
+  body {
+    @apply bg-areia-50 font-sans text-texto antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-titulo text-texto;
+  }
+
+  h1 {
+    @apply text-3xl font-semibold;
+  }
+
+  h2 {
+    @apply text-2xl font-semibold;
+  }
+
+  h3 {
+    @apply text-lg font-semibold;
+  }
+
+  a {
+    @apply text-primaria-600 hover:text-primaria-700;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-primaria-500;
+  }
+}
+
 @utility cartao {
   @apply overflow-hidden rounded-cartao border border-areia-200 bg-white shadow-sm;
 }

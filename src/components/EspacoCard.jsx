@@ -12,7 +12,7 @@ export default function EspacoCard ({espaco}) {
            <div className="cartao-corpo">
                 <div className="flex items-center justify-between">
                     <Link to={`/espacos/${espaco.id}`}>
-                        <h3 className="text-lg font-bold text-texto hover:underline">{espaco.nome}</h3>
+                        <h3 className="hover:underline">{espaco.nome}</h3>
                     </Link>
                     
                     <BotaoFavorito espacoId={Number(espaco.id)} />

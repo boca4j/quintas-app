@@ -1,13 +1,51 @@
+import { useEffect, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useItem } from '../hooks/useItem.jsx'
+import { verificarDisponibilidade, criarReserva } from '../api/quintasApi.js'
 import Loading from '../components/Loading.jsx'
 import MensagemErro from '../components/MensagemErro.jsx'
 import ImagemEspaco from '../components/ImagemEspaco.jsx'
 import BotaoFavorito from '../components/BotaoFavorito.jsx'
-import { Link, useParams } from 'react-router-dom'
+import ReservaForm from '../components/ReservaForm.jsx'
 
 export default function DetalhePage() {
   const { id } = useParams()
+  const navigate = useNavigate()
   const { item, loading, erro } = useItem(id)
+  const [aSubmeter, setASubmeter] = useState(false)
+  const [erroReserva, setErroReserva] = useState(null)
+  const [sucesso, setSucesso] = useState(false)
+
+  useEffect(() => {
+    if (!sucesso) return
+    const temporizador = setTimeout(() => navigate('/minhas-reservas'), 1500)
+    return () => clearTimeout(temporizador)
+  }, [sucesso, navigate])
+
+  async function handleReservar(dados) {
+    setASubmeter(true)
+    setErroReserva(null)
+
+    try {
+      const { disponivel } = await verificarDisponibilidade(dados.itemId, {
+        inicio: dados.dataInicio,
+        fim: dados.dataFim,
+        quantidade: dados.quantidade,
+      })
+
+      if (!disponivel) {
+        setErroReserva('Sem disponibilidade para as datas escolhidas.')
+        return
+      }
+
+      await criarReserva(dados)
+      setSucesso(true)
+    } catch (erroApi) {
+      setErroReserva(erroApi.message)
+    } finally {
+      setASubmeter(false)
+    }
+  }
 
   if (loading) return <Loading mensagem="A carregar espaço..." />
 
@@ -22,27 +60,48 @@ export default function DetalhePage() {
         ← Voltar à lista
       </Link>
 
-      <div className="cartao-imagem mt-4 h-64 rounded-cartao">
-        <ImagemEspaco src={item.imagem} alt={item.nome} />
-      </div>
+      <section className="cartao mt-4 p-6">
+        <div className="cartao-imagem mt-4 h-64 rounded-cartao">
+          <ImagemEspaco src={item.imagem} alt={item.nome} />
+        </div>
 
-      <div className="mt-4 flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-texto">{item.nome}</h1>
-        <BotaoFavorito espacoId={Number(id)} />
-      </div>
+        <div className="mt-4 flex items-center justify-between">
+          <h1 className="text-3xl font-bold text-texto">{item.nome}</h1>
+          <BotaoFavorito espacoId={Number(id)} />
+        </div>
 
-      <p className="subtitulo">
-        <span className="badge">{item.categoria}</span>
-        {item.localizacao}
-      </p>
+        <p className="subtitulo">
+          <span className="badge">{item.categoria}</span>
+          {item.localizacao}
+        </p>
 
-      <p className="mt-2 text-texto">{item.descricao}</p>
+        <p className="mt-2 text-texto">{item.descricao}</p>
 
-      <div className="mt-4 flex items-center gap-4">
-        <span className="preco">{item.precoDia}€ / dia</span>
-        <span className="avaliacao">★ {item.avaliacao}</span>
-        <span className="subtitulo">{item.capacidade} pessoas</span>
-      </div>
+        <div className="mt-4 flex items-center gap-4">
+          <span className="preco">{item.precoDia}€ / dia</span>
+          <span className="avaliacao">★ {item.avaliacao}</span>
+          <span className="subtitulo">{item.capacidade} pessoas</span>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {item.catering && <span className="badge">Catering</span>}
+          {item.quartos > 0 && <span className="badge">{item.quartos} quartos</span>}
+          {item.estacionamento > 0 && <span className="badge">{item.estacionamento} lugares de estacionamento</span>}
+        </div>
+      </section>
+
+      <section className="cartao mt-4 p-6">
+        <h2 className="mb-4 text-2xl font-semibold text-texto">Faça aqui a sua reserva</h2>
+        {sucesso ? (
+          <p className="alerta-sucesso mt-6" role="status">
+            Reserva criada com sucesso! A redirecionar para as suas reservas...
+          </p>
+        ) : (
+          <div className="mt-6">
+            <ReservaForm espaco={item} onSubmit={handleReservar} aSubmeter={aSubmeter} />
+            <MensagemErro mensagem={erroReserva} />
+          </div>
+        )}
+      </section>
     </div>
   )
 }
