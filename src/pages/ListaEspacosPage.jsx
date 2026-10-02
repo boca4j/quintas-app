@@ -51,7 +51,7 @@ export default function ListaEspacosPage() {
     <div className="pagina">
       <div className="cabecalho-pagina">
         <div>
-          <h1 className="text-3xl font-bold text-texto">Espaços</h1>
+          <h1>Espaços</h1>
           <p className="subtitulo">Encontre o espaço ideal para o seu evento.</p>
         </div>
       </div>
