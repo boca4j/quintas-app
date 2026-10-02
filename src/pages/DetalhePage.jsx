@@ -77,6 +77,11 @@ export default function DetalhePage() {
           <span className="avaliacao">★ {item.avaliacao}</span>
           <span className="subtitulo">{item.capacidade} pessoas</span>
         </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {item.catering && <span className="badge">Catering</span>}
+          {item.quartos > 0 && <span className="badge">{item.quartos} quartos</span>}
+          {item.estacionamento > 0 && <span className="badge">{item.estacionamento} lugares de estacionamento</span>}
+        </div>
       </section>
 
       <section className="cartao mt-4 p-6">
