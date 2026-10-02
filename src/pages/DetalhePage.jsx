@@ -55,38 +55,43 @@ export default function DetalhePage() {
         ← Voltar à lista
       </Link>
 
-      <div className="cartao-imagem mt-4 h-64 rounded-cartao">
-        <ImagemEspaco src={item.imagem} alt={item.nome} />
-      </div>
-
-      <div className="mt-4 flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-texto">{item.nome}</h1>
-        <BotaoFavorito espacoId={Number(id)} />
-      </div>
-
-      <p className="subtitulo">
-        <span className="badge">{item.categoria}</span>
-        {item.localizacao}
-      </p>
-
-      <p className="mt-2 text-texto">{item.descricao}</p>
-
-      <div className="mt-4 flex items-center gap-4">
-        <span className="preco">{item.precoDia}€ / dia</span>
-        <span className="avaliacao">★ {item.avaliacao}</span>
-        <span className="subtitulo">{item.capacidade} pessoas</span>
-      </div>
-
-      {sucesso ? (
-        <p className="alerta-sucesso mt-6" role="status">
-          Reserva criada com sucesso! A redirecionar para as suas reservas...
-        </p>
-      ) : (
-        <div className="mt-6">
-          <ReservaForm espaco={item} onSubmit={handleReservar} aSubmeter={aSubmeter} />
-          <MensagemErro mensagem={erroReserva} />
+      <section className="cartao mt-4 p-6">
+        <div className="cartao-imagem mt-4 h-64 rounded-cartao">
+          <ImagemEspaco src={item.imagem} alt={item.nome} />
         </div>
-      )}
+
+        <div className="mt-4 flex items-center justify-between">
+          <h1 className="text-3xl font-bold text-texto">{item.nome}</h1>
+          <BotaoFavorito espacoId={Number(id)} />
+        </div>
+
+        <p className="subtitulo">
+          <span className="badge">{item.categoria}</span>
+          {item.localizacao}
+        </p>
+
+        <p className="mt-2 text-texto">{item.descricao}</p>
+
+        <div className="mt-4 flex items-center gap-4">
+          <span className="preco">{item.precoDia}€ / dia</span>
+          <span className="avaliacao">★ {item.avaliacao}</span>
+          <span className="subtitulo">{item.capacidade} pessoas</span>
+        </div>
+      </section>
+
+      <section className="cartao mt-4 p-6">
+        <h1 className="mb-4 text-2xl font-semibold text-texto">Faça aqui a sua reserva</h1>
+        {sucesso ? (
+          <p className="alerta-sucesso mt-6" role="status">
+            Reserva criada com sucesso! A redirecionar para as suas reservas...
+          </p>
+        ) : (
+          <div className="mt-6">
+            <ReservaForm espaco={item} onSubmit={handleReservar} aSubmeter={aSubmeter} />
+            <MensagemErro mensagem={erroReserva} />
+          </div>
+        )}
+      </section>
     </div>
   )
 }
