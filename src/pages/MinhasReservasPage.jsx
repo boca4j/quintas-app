@@ -4,11 +4,7 @@ import { useReservas } from '../hooks/useReservas.jsx'
 import Loading from '../components/Loading.jsx'
 import MensagemErro from '../components/MensagemErro.jsx'
 import ImagemEspaco from '../components/ImagemEspaco.jsx'
-
-function calcularDias(inicio, fim) {
-  const umDia = 1000 * 60 * 60 * 24
-  return Math.round((new Date(fim) - new Date(inicio)) / umDia) + 1
-}
+import { calcularDias } from '../utils/datas.js'
 
 function formatarData(data) {
   return new Date(data).toLocaleDateString('pt-PT')
@@ -67,7 +63,7 @@ function MinhasReservasPage() {
       <ul className="mt-6 flex flex-col gap-4">
         {reservas.map((reserva) => {
           const dias = calcularDias(reserva.dataInicio, reserva.dataFim)
-          const total = reserva.total ?? (reserva.espaco ? reserva.espaco.preco * dias : null)
+          const total = reserva.total ?? (reserva.espaco ? reserva.espaco.precoDia * dias : null)
 
           return (
             <li key={reserva.id} className="cartao flex flex-col sm:flex-row">

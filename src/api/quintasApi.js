@@ -1,5 +1,16 @@
 const API = 'http://localhost:3001/quintas'
 
+async function pedir(url, opcoes) {
+  let resposta
+  try {
+    resposta = await fetch(url, opcoes)
+  }
+  catch {
+    throw new Error('Não foi possível contactar o servidor. Verifique a sua ligação à Internet.')
+  }
+  return tratarResposta(resposta)
+}
+
 async function tratarResposta(resposta) {
   if (!resposta.ok) {
     const dados = await resposta.json().catch(() => ({}))
@@ -12,43 +23,37 @@ async function tratarResposta(resposta) {
 }
 
 export async function listarItens() {
-  const resposta = await fetch(`${API}/itens`)
-  return tratarResposta(resposta)
+  return pedir(`${API}/itens`)
 }
 
 export async function obterItem(id) {
-  const resposta = await fetch(`${API}/itens/${id}`)
-  return tratarResposta(resposta)
+  return pedir(`${API}/itens/${id}`)
 }
 
 export async function verificarDisponibilidade(id, { inicio, fim, quantidade }) {
   const parametros = new URLSearchParams({ inicio, fim, quantidade })
-  const resposta = await fetch(`${API}/itens/${id}/disponibilidade?${parametros}`)
-  return tratarResposta(resposta)
+  return pedir(`${API}/itens/${id}/disponibilidade?${parametros}`)
 }
 
-export async function criarReserva({ itemId, dataInicio, dataFim, quantidade, nome, email }) {
-  const resposta = await fetch(`${API}/reservas`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      itemId: Number(itemId),
-      dataInicio,
-      dataFim,
-      quantidade: Number(quantidade),
-      nome,
-      email,
-    }),
-  })
-  return tratarResposta(resposta)
+export async function criarReserva({ itemId, dataInicio, dataFim, quantidade, nome, email }) 
+{
+    return pedir(`${API}/reservas`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        itemId: Number(itemId),
+        dataInicio,
+        dataFim,
+        quantidade: Number(quantidade),
+        nome,
+        email,
+      }),
+    })
 }
-
 export async function listarReservas() {
-  const resposta = await fetch(`${API}/reservas`)
-  return tratarResposta(resposta)
+  return pedir(`${API}/reservas`)
 }
 
 export async function cancelarReserva(id) {
-  const resposta = await fetch(`${API}/reservas/${id}`, { method: 'DELETE' })
-  return tratarResposta(resposta)
+  return pedir(`${API}/reservas/${id}`, { method: 'DELETE' })
 }

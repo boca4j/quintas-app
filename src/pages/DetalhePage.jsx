@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useItem } from '../hooks/useItem.jsx'
 import { verificarDisponibilidade, criarReserva } from '../api/quintasApi.js'
@@ -15,6 +15,12 @@ export default function DetalhePage() {
   const [aSubmeter, setASubmeter] = useState(false)
   const [erroReserva, setErroReserva] = useState(null)
   const [sucesso, setSucesso] = useState(false)
+
+  useEffect(() => {
+    if (!sucesso) return
+    const temporizador = setTimeout(() => navigate('/minhas-reservas'), 1500)
+    return () => clearTimeout(temporizador)
+  }, [sucesso, navigate])
 
   async function handleReservar(dados) {
     setASubmeter(true)
@@ -34,7 +40,6 @@ export default function DetalhePage() {
 
       await criarReserva(dados)
       setSucesso(true)
-      setTimeout(() => navigate('/minhas-reservas'), 1500)
     } catch (erroApi) {
       setErroReserva(erroApi.message)
     } finally {
@@ -85,7 +90,7 @@ export default function DetalhePage() {
       </section>
 
       <section className="cartao mt-4 p-6">
-        <h1 className="mb-4 text-2xl font-semibold text-texto">Faça aqui a sua reserva</h1>
+        <h2 className="mb-4 text-2xl font-semibold text-texto">Faça aqui a sua reserva</h2>
         {sucesso ? (
           <p className="alerta-sucesso mt-6" role="status">
             Reserva criada com sucesso! A redirecionar para as suas reservas...
