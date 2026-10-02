@@ -8,7 +8,7 @@ function removerAcentos(str) {
 export function filtrarPorTexto(itens, texto) {
     if (!texto || !texto.trim()) return itens
 
-    const textoLimpo = removerAcentos(texto)
+    const textoLimpo = removerAcentos(texto.trim())
 
     return itens.filter((item) => {
         const nomeLimpo = removerAcentos(item.nome)
